@@ -1,18 +1,20 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script src="https://rawgit.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
   </head>
   <body>
-    <div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+    <div style="position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;">
       <button class="button" id="btn1">Once Again</button>
       <button class="button" id="btn4">Start</button>
     </div>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <a-scene
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false;"
@@ -23,28 +25,47 @@
       device-orientation-permission-ui="enabled: false"
     >
       <a-assets>
-        <video id="mivideo" playsinline webkitplaysinline crossorigin="anonymous" autoplay loop src="114.webm" type="video/webm"></video>
+        <video id="mivideo" crossorigin="anonymous" playsinline webkitplaysinline autoplay controls src="114.webm" type="video/webm" transparent="true" muted="false"></video>
       </a-assets>
-      <a-camera-static></a-camera-static>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <a-entity mindar-image-target="targetIndex: 0">
         <a-video material="shader: transparent-video;" src="#mivideo" position="0 0 0" width="3" height="1.552" rotation="0 0 0"></a-video>
       </a-entity>
+
+      <script>
+        var btn1 = document.getElementById("btn1");
+        var btn4 = document.getElementById("btn4");
+        var video = document.getElementById("mivideo");
+        var m = document.querySelector("a-entity");
+
+        m.addEventListener("targetfound", function (e) {
+          console.log("targetfound");
+          btn1.addEventListener("click", function () {
+            video.pause();
+            video.currentTime = 0;
+            video.play();
+          });
+
+          btn4.addEventListener("click", function () {
+            video.play();
+            video.muted = false;
+          });
+        });
+
+        m.addEventListener("targetLost", function (e) {
+          console.log("lost");
+          btn1.removeEventListener("click", function () {
+            video.pause();
+            video.currentTime = 0;
+            video.play();
+          });
+
+          btn4.removeEventListener("click", function () {
+            video.play();
+            video.muted = false;
+          });
+        });
+      </script>
     </a-scene>
-
-    <script>
-      var btn1 = document.getElementById("btn1");
-      var btn4 = document.getElementById("btn4");
-      var video = document.getElementById("mivideo");
-
-      btn1.addEventListener("click", function () {
-        video.currentTime = 0;
-        video.play();
-      });
-
-      btn4.addEventListener("click", function () {
-        video.play();
-        video.muted = false;
-      });
-    </script>
   </body>
 </html>
