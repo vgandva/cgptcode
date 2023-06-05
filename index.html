@@ -31,41 +31,45 @@
       <a-entity mindar-image-target="targetIndex: 0">
         <a-video material="shader: transparent-video;" src="#mivideo" position="0 0 0" width="3" height="1.552" rotation="0 0 0"></a-video>
       </a-entity>
-
-      <script>
-        var btn1 = document.getElementById("btn1");
-        var btn4 = document.getElementById("btn4");
-        var video = document.getElementById("mivideo");
-        var m = document.querySelector("a-entity");
-
-        m.addEventListener("targetfound", function (e) {
-          console.log("targetfound");
-          btn1.addEventListener("click", function () {
-            video.pause();
-            video.currentTime = 0;
-            video.play();
-          });
-
-          btn4.addEventListener("click", function () {
-            video.play();
-            video.muted = false;
-          });
-        });
-
-        m.addEventListener("targetLost", function (e) {
-          console.log("lost");
-          btn1.removeEventListener("click", function () {
-            video.pause();
-            video.currentTime = 0;
-            video.play();
-          });
-
-          btn4.removeEventListener("click", function () {
-            video.play();
-            video.muted = false;
-          });
-        });
-      </script>
     </a-scene>
+
+    <script>
+      var btn1 = document.getElementById("btn1");
+      var btn4 = document.getElementById("btn4");
+      var video = document.getElementById("mivideo");
+      var m = document.querySelector("a-entity");
+
+      m.addEventListener("targetfound", function (e) {
+        console.log("targetfound");
+        video.play();
+        video.muted = false;
+
+        btn1.addEventListener("click", function () {
+          video.pause();
+          video.currentTime = 0;
+          video.play();
+        });
+
+        btn4.addEventListener("click", function () {
+          video.play();
+        });
+      });
+
+      m.addEventListener("targetLost", function (e) {
+        console.log("lost");
+        video.pause();
+        video.currentTime = 0;
+
+        btn1.removeEventListener("click", function () {
+          video.pause();
+          video.currentTime = 0;
+          video.play();
+        });
+
+        btn4.removeEventListener("click", function () {
+          video.play();
+        });
+      });
+    </script>
   </body>
 </html>
