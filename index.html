@@ -19,7 +19,7 @@
 
 
         
-        <a-entity mindar-image-target="targetIndex: 0">
+        <a-entity  id="mytarget" mindar-image-target="targetIndex: 0">
 
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
 
@@ -30,11 +30,11 @@
         <button class="button" id="btn4" onclick="startVideo()">Start</button>
       </div>
 
-      <script>
+        <script>
         var video = document.querySelector("#mivideo");
         var targetFound = false;
 
-        AFRAME.registerComponent("mytarget", {
+        AFRAME.registerComponent("play-video", {
           init: function () {
             var self = this;
 
