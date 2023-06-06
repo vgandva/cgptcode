@@ -35,10 +35,7 @@
 
    
       
-       </a-entity>
-       <a-entity id="play-button" visible="false" class="clickable" position="0 -1.5 -2" scale="0.5 0.5 0.5">
-          <a-plane color="white" height="1" width="1"></a-plane>
-          <a-text value="Play" color="black" align="center"></a-text>
+      
            <script>
     
 
@@ -56,12 +53,14 @@
 })
      
 document.getElementById("btn4").addEventListener("click", (e)=>{
-
+ m.addEventListener("targetfound", (e)=>{
+      console.log("targetfound")
   var v = document.querySelector('#mivideo').play();
   
 })
      document.getElementById("btn4").addEventListener("click", (e)=>{
-
+ m.addEventListener("targetfound", (e)=>{
+      console.log("targetfound")
   var v = document.querySelector('#mivideo').muted=false;
 })
 
@@ -70,22 +69,7 @@ document.getElementById("btn1").addEventListener("click", function() {
   video.currentTime = 0;
   video.play();
 });
-      AFRAME.registerComponent('mytarget', {
-        init: function () {
-          const video = document.querySelector("#mivideo");
-
-          this.el.addEventListener('targetFound', event => {
-            console.log("Target found");
-            video.play();
-            showVideoControls();
-          });
-
-          this.el.addEventListener('targetLost', event => {
-            console.log("Target lost");
-            video.pause();
-          });
-        }
-      });
+      
     </script>
         </a-entity>
   
