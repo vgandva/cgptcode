@@ -59,15 +59,27 @@ document.getElementById("btn4").addEventListener("click", (e)=>{
   
 })
      document.getElementById("btn4").addEventListener("click", (e)=>{
- m.addEventListener("targetfound", (e)=>{
-      console.log("targetfound")
-  var v = document.querySelector('#mivideo').muted=false;
+if (m.addEventListener("targetfound") {
+              
+              console.log("targetfound")
+  var v = document.querySelector('#mivideo').muted=false;  
+              } else {
+                console.log("lost")
+      var v = document.querySelector('#mivideo').pause();
+              } 
+      
 })
 
 document.getElementById("btn1").addEventListener("click", function() {
+  if (m.addEventListener("targetfound") {
+              
   var video = document.querySelector('#mivideo');
   video.currentTime = 0;
   video.play();
+    } else {
+                console.log("lost")
+      var v = document.querySelector('#mivideo').pause();
+              } 
 });
       
     </script>
