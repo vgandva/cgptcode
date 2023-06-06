@@ -10,36 +10,35 @@
         init: function () {
           const video = document.querySelector("#mivideo");
           let targetFound = false;
+          const playButton = document.querySelector("#play-button");
 
           this.el.addEventListener('targetFound', event => {
             console.log("Target found");
             targetFound = true;
             video.muted = false;
+            playButton.setAttribute("value", "Pause");
+            playButton.addEventListener("click", pauseVideo);
           });
 
           this.el.addEventListener('targetLost', event => {
             console.log("Target lost");
             targetFound = false;
             video.pause();
+            playButton.setAttribute("value", "Play");
+            playButton.removeEventListener("click", pauseVideo);
           });
 
-          const btnStart = document.getElementById("btn4");
-          const btnPlay = document.getElementById("btn1");
-
-          btnStart.addEventListener("click", () => {
+          const pauseVideo = () => {
             if (targetFound) {
-              console.log("Start button clicked");
-              video.play();
+              if (video.paused) {
+                video.play();
+                playButton.setAttribute("value", "Pause");
+              } else {
+                video.pause();
+                playButton.setAttribute("value", "Play");
+              }
             }
-          });
-
-          btnPlay.addEventListener("click", () => {
-            if (targetFound) {
-              console.log("Play button clicked");
-              video.currentTime = 0;
-              video.play();
-            }
-          });
+          };
         }
       });
     </script>
@@ -58,8 +57,7 @@
       </a-entity>
 
       <div style="position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1;">
-        <button class="button" id="btn4">Start</button>
-        <button class="button" id="btn1">Play from Beginning</button>
+        <input type="button" class="button" id="play-button" value="Play">
       </div>
     </a-scene>
   </body>
