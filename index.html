@@ -37,47 +37,32 @@
 
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
 
- <script>
-  // Store references to the video element and buttons
-  var video = document.querySelector('#mivideo');
-  var playButton = document.getElementById('btn4');
-  var muteButton = document.getElementById('btn4');
-  var resetButton = document.getElementById('btn1');
+<script>
+  var m = document.querySelector("a-entity");
 
-  // Add event listener to play button
-  playButton.addEventListener('click', function() {
-    // Check if the target is found before playing the video
-    if (document.querySelector('a-entity[mindar-image-target]').object3D.visible) {
-      video.play();
-    }
+  m.addEventListener("targetfound", function(e) {
+    console.log("Target found");
+    var v = document.querySelector('#mivideo').play();
   });
 
-  // Add event listener to mute button
-  muteButton.addEventListener('click', function() {
-    // Check if the target is found before unmuting the video
-    if (document.querySelector('a-entity[mindar-image-target]').object3D.visible) {
-      video.muted = false;
-    }
+  m.addEventListener("targetlost", function(e) {
+    console.log("Target lost");
+    var v = document.querySelector('#mivideo').pause();
   });
 
-  // Add event listener to reset button
-  resetButton.addEventListener('click', function() {
+  document.getElementById("btn4").addEventListener("click", function() {
+    var v = document.querySelector('#mivideo');
+    v.play();
+    v.muted = false;
+  });
+
+  document.getElementById("btn1").addEventListener("click", function() {
+    var video = document.querySelector('#mivideo');
     video.currentTime = 0;
     video.play();
   });
-
-  // Add event listener to target found event
-  document.querySelector('a-entity[mindar-image-target]').addEventListener('targetfound', function() {
-    console.log('Target found');
-    video.play();
-  });
-
-  // Add event listener to target lost event
-  document.querySelector('a-entity[mindar-image-target]').addEventListener('targetlost', function() {
-    console.log('Target lost');
-    video.pause();
-  });
 </script>
+
 
       
        </a-entity>
