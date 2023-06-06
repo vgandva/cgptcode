@@ -5,7 +5,19 @@
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
 
-    <script>
+    
+  </head>
+
+  <body>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      <a-assets>
+        <video id="mivideo" crossOrigin="anonymous" playsinline webkitplaysinline autoplay controls src="114.webm" type="video/webm" transparent="true" muted="true"></video>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
+        <a-video material="shader: transparent-video;" src="#mivideo" position="0 0 0" width="3" height="1.552" rotation="0 0 0"></a-video><script>
       AFRAME.registerComponent('mytarget', {
         init: function () {
           const video = document.querySelector("#mivideo");
@@ -42,18 +54,43 @@
         }
       });
     </script>
-  </head>
+        <script>
+      AFRAME.registerComponent('mytarget', {
+        init: function () {
+          const video = document.querySelector("#mivideo");
+          let targetFound = false;
+          const playButton = document.querySelector("#play-button");
 
-  <body>
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <a-assets>
-        <video id="mivideo" crossOrigin="anonymous" playsinline webkitplaysinline autoplay controls src="114.webm" type="video/webm" transparent="true" muted="true"></video>
-      </a-assets>
+          this.el.addEventListener('targetFound', event => {
+            console.log("Target found");
+            targetFound = true;
+            video.muted = false;
+            playButton.setAttribute("value", "Pause");
+            playButton.addEventListener("click", pauseVideo);
+          });
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+          this.el.addEventListener('targetLost', event => {
+            console.log("Target lost");
+            targetFound = false;
+            video.pause();
+            playButton.setAttribute("value", "Play");
+            playButton.removeEventListener("click", pauseVideo);
+          });
 
-      <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
-        <a-video material="shader: transparent-video;" src="#mivideo" position="0 0 0" width="3" height="1.552" rotation="0 0 0"></a-video>
+          const pauseVideo = () => {
+            if (targetFound) {
+              if (video.paused) {
+                video.play();
+                playButton.setAttribute("value", "Pause");
+              } else {
+                video.pause();
+                playButton.setAttribute("value", "Play");
+              }
+            }
+          };
+        }
+      });
+    </script>
       </a-entity>
 
       <div style="position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1;">
