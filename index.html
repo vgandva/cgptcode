@@ -38,35 +38,34 @@
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
 
    <script>
-        const btnStart = document.getElementById("btn4");
-        const btnPlay = document.getElementById("btn1");
-        const mytarget = document.getElementById("mytarget");
-        const video = document.querySelector("#mivideo");
+         var m = document.querySelector("a-entity")
+      m.addEventListener("targetfound", (e)=>{
+      console.log("targetfound")
+      var v = document.querySelector('#mivideo').play();
+   
 
-        btnStart.addEventListener("click", () => {
-          if (mytarget.components["mindar-image-target"].isFound) {
-            console.log("Target found");
-            video.play();
-          }
-        });
+})
+      m.addEventListener("targetLost", (e)=>{
+      console.log("lost")
+      var v = document.querySelector('#mivideo').pause();
+  
+})
+     document.getElementById("btn4").addEventListener("click", () => {
+  if (mytarget.components["mindar-image-target"].isFound) {
+    console.log("Target found");
+    var video = document.querySelector('#mivideo');
+    video.play();
+  }
+});
 
-        btnPlay.addEventListener("click", () => {
-          if (mytarget.components["mindar-image-target"].isFound) {
-            console.log("Target found");
-            video.currentTime = 0;
-            video.play();
-          }
-        });
-
-        mytarget.addEventListener('targetFound', () => {
-          console.log("Target found");
-          video.muted = false;
-        });
-
-        mytarget.addEventListener('targetLost', () => {
-          console.log("Target lost");
-          video.pause();
-        });
+document.getElementById("btn1").addEventListener("click", () => {
+  if (mytarget.components["mindar-image-target"].isFound) {
+    console.log("Target found");
+    var video = document.querySelector('#mivideo');
+    video.currentTime = 0;
+    video.play();
+  }
+});
       </script>
       
        </a-entity>
