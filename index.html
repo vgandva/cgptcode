@@ -36,36 +36,51 @@
         <a-entity mindar-image-target="targetIndex: 0">
 
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
-
-<script>
+          <script>
   var m = document.querySelector("a-entity");
+  var video = document.querySelector('#mivideo');
+  var btn4 = document.getElementById("btn4");
+  var btn1 = document.getElementById("btn1");
 
   m.addEventListener("targetfound", function(e) {
     console.log("Target found");
-    var v = document.querySelector('#mivideo').play();
+    btn4.disabled = false;
+    btn1.disabled = false;
+    if (video.paused) {
+      video.play();
+    }
   });
 
   m.addEventListener("targetlost", function(e) {
     console.log("Target lost");
-    var v = document.querySelector('#mivideo').pause();
+    btn4.disabled = true;
+    btn1.disabled = true;
+    if (!video.paused) {
+      video.pause();
+    }
   });
 
-  document.getElementById("btn4").addEventListener("click", function() {
-    var v = document.querySelector('#mivideo');
-    v.play();
-    v.muted = false;
+  btn4.addEventListener("click", function() {
+    if (!btn4.disabled) {
+      if (!video.paused) {
+        video.pause();
+      }
+      video.currentTime = 0;
+      video.play();
+    }
   });
 
-  document.getElementById("btn1").addEventListener("click", function() {
-    var video = document.querySelector('#mivideo');
-    video.currentTime = 0;
-    video.play();
+  btn1.addEventListener("click", function() {
+    if (!btn1.disabled) {
+      if (!video.paused) {
+        video.pause();
+      }
+      video.currentTime = 0;
+      video.play();
+    }
   });
 </script>
-
-
-      
-       </a-entity>
+ </a-entity>
   
     </a-scene>
   </body>
