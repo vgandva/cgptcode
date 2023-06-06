@@ -37,9 +37,8 @@
 
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
 
-   <script> 
-
-        var m = document.querySelector("a-entity");
+  <script>
+  var m = document.querySelector("a-entity");
   var video = document.querySelector('#mivideo');
   var btn = document.getElementById("playButton");
 
@@ -62,19 +61,15 @@
   btn.addEventListener("click", function() {
     if (!btn.disabled) {
       if (video.paused) {
+        video.muted = false; // Unmute the video
         video.play();
       } else {
         video.pause();
       }
     }
   });
+</script>
 
-
-
- 
- video.muted = false;
-
-     </script>
       
        </a-entity>
   
