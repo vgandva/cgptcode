@@ -1,12 +1,26 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image.prod.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
-  </head>
+    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
 
-  <body>
+
+  
+  </style>
+
+<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+    <button class="button" id="btn1">once again</button>
+    <button class="button" id="btn4">start</button>
+   
+  </div>
+  
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+  </head>
+   <body>
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;"  mindar-image="imageTargetSrc: tvc.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     	
     
@@ -19,52 +33,55 @@
 
 
         
-        <a-entity  id="mytarget" mindar-image-target="targetIndex: 0">
+        <a-entity mindar-image-target="targetIndex: 0">
 
  <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
 
-      </a-entity>
+ <script>
+  // Store references to the video element and buttons
+  var video = document.querySelector('#mivideo');
+  var playButton = document.getElementById('btn4');
+  var muteButton = document.getElementById('btn4');
+  var resetButton = document.getElementById('btn1');
 
-      <div style="position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1;">
-        <button class="button" id="btn1" onclick="restartVideo()">Once Again</button>
-        <button class="button" id="btn4" onclick="startVideo()">Start</button>
-      </div>
+  // Add event listener to play button
+  playButton.addEventListener('click', function() {
+    // Check if the target is found before playing the video
+    if (document.querySelector('a-entity[mindar-image-target]').object3D.visible) {
+      video.play();
+    }
+  });
 
-        <script>
-        var video = document.querySelector("#mivideo");
-        var targetFound = false;
+  // Add event listener to mute button
+  muteButton.addEventListener('click', function() {
+    // Check if the target is found before unmuting the video
+    if (document.querySelector('a-entity[mindar-image-target]').object3D.visible) {
+      video.muted = false;
+    }
+  });
 
-        AFRAME.registerComponent("play-video", {
-          init: function () {
-            var self = this;
+  // Add event listener to reset button
+  resetButton.addEventListener('click', function() {
+    video.currentTime = 0;
+    video.play();
+  });
 
-            this.el.addEventListener("targetFound", function () {
-              console.log("Target found");
-              targetFound = true;
-              video.muted = false;
-            });
+  // Add event listener to target found event
+  document.querySelector('a-entity[mindar-image-target]').addEventListener('targetfound', function() {
+    console.log('Target found');
+    video.play();
+  });
 
-            this.el.addEventListener("targetLost", function () {
-              console.log("Target lost");
-              targetFound = false;
-              video.pause();
-            });
-          },
-        });
+  // Add event listener to target lost event
+  document.querySelector('a-entity[mindar-image-target]').addEventListener('targetlost', function() {
+    console.log('Target lost');
+    video.pause();
+  });
+</script>
 
-        function startVideo() {
-          if (targetFound) {
-            video.play();
-          }
-        }
-
-        function restartVideo() {
-          if (targetFound) {
-            video.currentTime = 0;
-            video.play();
-          }
-        }
-      </script>
+      
+       </a-entity>
+  
     </a-scene>
   </body>
 </html>
