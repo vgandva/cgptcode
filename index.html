@@ -6,70 +6,79 @@
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
     <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-  </head>
-  <body>
-    <div style="position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;">
-      <button class="button" id="btn1">Once Again</button>
-      <button class="button" id="btn4">Start</button>
-    </div>
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
+  <script>
+      const playVideo = () => {
+        const video = document.querySelector("#mivideo");
+        const playButton = document.querySelector("#play-button");
 
-    <a-scene
-      embedded
-      arjs="sourceType: webcam; debugUIEnabled: false;"
-      mindar-image="imageTargetSrc: tvc.mind;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
-      <a-assets>
-        <video id="mivideo" crossorigin="anonymous" playsinline webkitplaysinline autoplay controls src="114.webm" type="video/webm" transparent="true" muted="false"></video>
-      </a-assets>
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-video material="shader: transparent-video;" src="#mivideo" position="0 0 0" width="3" height="1.552" rotation="0 0 0"></a-video>
-      </a-entity>
-    </a-scene>
-
-    <script>
-      var btn1 = document.getElementById("btn1");
-      var btn4 = document.getElementById("btn4");
-      var video = document.getElementById("mivideo");
-      var m = document.querySelector("a-entity");
-
-      m.addEventListener("targetfound", function (e) {
-        console.log("targetfound");
         video.play();
-        video.muted = false;
+        playButton.setAttribute("visible", false);
+      }
 
-        btn1.addEventListener("click", function () {
-          video.pause();
-          video.currentTime = 0;
-          video.play();
-        });
+      const pauseVideo = () => {
+        const video = document.querySelector("#mivideo");
+        const playButton = document.querySelector("#play-button");
 
-        btn4.addEventListener("click", function () {
-          video.play();
-        });
-      });
-
-      m.addEventListener("targetLost", function (e) {
-        console.log("lost");
         video.pause();
-        video.currentTime = 0;
+        playButton.setAttribute("visible", true);
+      }
 
-        btn1.removeEventListener("click", function () {
-          video.pause();
-          video.currentTime = 0;
-          video.play();
-        });
+      const showVideoControls = () => {
+        const playButton = document.querySelector("#play-button");
 
-        btn4.removeEventListener("click", function () {
-          video.play();
+        playButton.setAttribute("visible", true);
+        playButton.addEventListener('click', () => {
+          playVideo();
         });
+      }
+
+      AFRAME.registerComponent('mytarget', {
+        init: function () {
+          const video = document.querySelector("#mivideo");
+
+          this.el.addEventListener('targetFound', event => {
+            console.log("Target found");
+            video.play();
+            showVideoControls();
+          });
+
+          this.el.addEventListener('targetLost', event => {
+            console.log("Target lost");
+            video.pause();
+          });
+        }
       });
     </script>
+  
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+  </head>
+   <body>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;"  mindar-image="imageTargetSrc: tvc.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      
+    
+      <a-assets>
+
+        <video  id="mivideo" crossOrigin="anonymous" playsinline webkitplaysinline autoplay controls  src="114.webm" type="video/webm" transparent="true" muted="false" ></video>
+      </a-assets>
+       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+
+
+        
+        <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
+
+ <a-video  material="shader: transparent-video;" src="#mivideo" position="0 0 0"  width="3" height="1.552" rotation="0 0 0"  ></a-video>
+
+   
+      
+       </a-entity>
+       <a-entity id="play-button" visible="false" class="clickable" position="0 -1.5 -2" scale="0.5 0.5 0.5">
+          <a-plane color="white" height="1" width="1"></a-plane>
+          <a-text value="Play" color="black" align="center"></a-text>
+        </a-entity>
+  
+    </a-scene>
   </body>
 </html>
