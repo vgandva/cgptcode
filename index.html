@@ -5,23 +5,7 @@
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.0.0/dist/mindar-image-aframe.prod.js"></script>
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
 
-    <script>
-      AFRAME.registerComponent('mytarget', {
-        init: function () {
-          const video = document.querySelector("#mivideo");
-
-          this.el.addEventListener('targetFound', event => {
-            console.log("Target found");
-            video.muted = false;
-          });
-
-          this.el.addEventListener('targetLost', event => {
-            console.log("Target lost");
-            video.pause();
-          });
-        }
-      });
-    </script>
+    
   </head>
 
   <body>
@@ -71,6 +55,23 @@
           console.log("Target lost");
           video.pause();
         });
+       
+      AFRAME.registerComponent('mytarget', {
+        init: function () {
+          const video = document.querySelector("#mivideo");
+
+          this.el.addEventListener('targetFound', event => {
+            console.log("Target found");
+            video.muted = false;
+          });
+
+          this.el.addEventListener('targetLost', event => {
+            console.log("Target lost");
+            video.pause();
+          });
+        }
+      });
+  
       </script>
     </a-scene>
   </body>
