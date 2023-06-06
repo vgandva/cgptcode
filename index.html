@@ -7,7 +7,11 @@
     <script src="https://unpkg.com/aframe-transparent-video-shader@1.0.3/dist/aframe-transparent-video-shader.umd.js"></script>
     <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
 
-
+<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+    <button class="button" id="btn1">once again</button>
+    <button class="button" id="btn4">start</button>
+   
+  </div>
   
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,31 +40,36 @@
           <a-plane color="white" height="1" width="1"></a-plane>
           <a-text value="Play" color="black" align="center"></a-text>
            <script>
-      const playVideo = () => {
-        const video = document.querySelector("#mivideo");
-        const playButton = document.querySelector("#play-button");
+    
 
-        video.play();
-        playButton.setAttribute("visible", false);
-      }
+      var m = document.querySelector("a-entity")
+      m.addEventListener("targetfound", (e)=>{
+      console.log("targetfound")
+      var v = document.querySelector('#mivideo').play();
+   
 
-      const pauseVideo = () => {
-        const video = document.querySelector("#mivideo");
-        const playButton = document.querySelector("#play-button");
+})
+      m.addEventListener("targetLost", (e)=>{
+      console.log("lost")
+      var v = document.querySelector('#mivideo').pause();
+  
+})
+     
+document.getElementById("btn4").addEventListener("click", (e)=>{
 
-        video.pause();
-        playButton.setAttribute("visible", true);
-      }
+  var v = document.querySelector('#mivideo').play();
+  
+})
+     document.getElementById("btn4").addEventListener("click", (e)=>{
 
-      const showVideoControls = () => {
-        const playButton = document.querySelector("#play-button");
+  var v = document.querySelector('#mivideo').muted=false;
+})
 
-        playButton.setAttribute("visible", true);
-        playButton.addEventListener('click', () => {
-          playVideo();
-        });
-      }
-
+document.getElementById("btn1").addEventListener("click", function() {
+  var video = document.querySelector('#mivideo');
+  video.currentTime = 0;
+  video.play();
+});
       AFRAME.registerComponent('mytarget', {
         init: function () {
           const video = document.querySelector("#mivideo");
